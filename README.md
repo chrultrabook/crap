@@ -4,7 +4,7 @@ Note: This project was originally forked from [reynhout/chrx](https://github.com
 The project has been completely rewritten since, and is now only a partitioning tool.
 It does not include any feature to install an alternate operating system, you must do that yourself.
 
-This tool works on all Chromebook models. See [documentation](https://docs.chrultrabook.com/docs/firmware/supported-devices.html).
+This tool works on all Chromebook/Chromebox models. See [documentation](https://docs.chrultrabook.com/docs/devices.html).
 
 ## Features
 
@@ -16,11 +16,14 @@ have to worry about your data being wiped!
 
 #### Reorder 1-sector partitions
 
-Fix a bug that causes libparted to error and be unable to detect existing partitions.
+Work around a bug that causes older versions of libparted to error and be unable to detect existing partitions in linux.
 If you're installing an operating system that uses an affected version of libparted, you will need
 to do this or the installer will fail to recognize existing partitions, which effectively wipes
 the disk when you install it.  
 See [this bug](https://lists.gnu.org/archive/html/bug-parted/2022-04/msg00004.html) for more info.
+
+Note: this bug only affects libparted 3.5 and older; it was fixed in version 3.5.28.
+Any decently new (2024+) distro should be unaffected by this bug.
 
 #### Re-create stateful filesystem
 
@@ -30,7 +33,7 @@ Reset the ChromeOS user data partition to a factory state.
 
 Running this script does not require you to have valid RW_LEGACY firmware installed,
 but this is currently the recommended method for dual booting another operating system alongside ChromeOS on x86_64-based hardware.
-See [MrChromebox's Firmware Utility Script](https://mrchromebox.tech/#fwscript) for installing RW_LEGACY firmware.
+See [MrChromebox's Firmware Utility Script](https://docs.mrchromebox.tech/docs/fwscript.html) for installing RW_LEGACY firmware.
 
 ### Running the script
 
@@ -55,7 +58,11 @@ CRAP - resizing stateful partition
 
 ## Notes
 
-* We do NOT EVER use the KERN-C or ROOT-C partitions NO
+- We do NOT EVER use the KERN-C or ROOT-C partitions NO
+
+## TODO / Planned features
+
+- Support LVM stateful (2023+ platforms)
 
 ## Acknowledgements
 
