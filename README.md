@@ -39,11 +39,12 @@ See [MrChromebox's Firmware Utility Script](https://docs.mrchromebox.tech/docs/f
 
 1. Ensure you're in developer mode and connected to WiFi.
 2. Open VT2 using `[ Ctrl ] [ Alt ] [ → ]` (F2), login as `root` (not `chronos`)
-	- Note: the script *cannot* be run with crosh on any version of ChromeOS.
-	- Note 2: you can also run the script while booted into your alternate OS!
+	- Important: the script *cannot* be run with crosh on any version of ChromeOS.
+	- Note: you can also run the script while booted into your alternate OS, given the [dependencies](#dependencies) are installed.
 3. Run the script!
 	- Run `bash <(curl https://raw.githubusercontent.com/chrultrabook/crap/master/crap)`
 	- URL shortened version: `bash <(curl -L https://tinyurl.com/crap-cb-01)`
+	- Important: in ChromeOS, you cannot use `sudo` to run this script. You must be logged in as root.
 4. The script will walk you through the steps to make room for an alternate OS.
 
 ## Screenshots
@@ -55,6 +56,13 @@ CRAP - main menu
 CRAP - resizing stateful partition
 
 ![Screenshot - CRAP - resizing stateful partition](/screenshots/screenshot02.png)
+
+## Dependencies
+
+When running on linux, the following utilities are required. The script will automatically show an error if any are missing.
+- util-linux
+- e2fsprogs
+- `cgpt`, which is available through most package managers
 
 ## Notes
 
