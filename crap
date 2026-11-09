@@ -17,7 +17,7 @@
 set -eE
 
 # variable variables
-SCRIPT_DATE="[2025-12-13]"
+SCRIPT_DATE="[2026-11-09]"
 
 # optional variables
 [ -z "$CRAP_TESTING" ] && CRAP_TESTING=0
@@ -448,22 +448,6 @@ fix_1s_parts() {
 	wait_on_enter_menu
 }
 
-check_1s_parts_prompt() {
-	[ -z "$NEEDS_1S_FIX" ] && return 0
-	clear_screen
-	echo "You have not reordered 1-sector partitions --"
-	echo "doing so is highly recommended if you're installing linux"
-	echo "alongside ChromeOS."
-	echo -e "${COLOR_CYAN_B}Would you like to reorder these partitions now? ${COLOR_YELLOW_B}(y/N)${COLOR_RESET}"
-	read -re action
-	case "$action" in
-		[yY]) : ;;
-		*) return ;;
-	esac
-	fix_1s_parts
-	main_menu
-}
-
 wipe_stateful() {
 	local stateful_mnt
 	suppress mkfs.ext4 -F -b 4096 -L H-STATE "$STATEFUL_PART" || return 1
@@ -516,14 +500,12 @@ main_menu() {
 		echo -e "║    alternate OS.                                                   ║"
 		if [ -n "$NEEDS_1S_FIX" ]; then
 			echo -e "║ ${COLOR_YELLOW_B}2) ${COLOR_CYAN_B}Reorder 1-sector partitions${COLOR_RESET}                                     ║"
-			echo -e "║    Fix a bug that causes libparted to error and be unable to       ║"
-			echo -e "║    detect existing partitions. Highly recommended before           ║"
-			echo -e "║    installing linux alongside ChromeOS.                            ║"
+			echo -e "║    Work around a bug that causes libparted to error and be unable  ║"
+			echo -e "║    to detect existing partitions.                                  ║"
 		else
 			echo -e "║ ${COLOR_BLACK_B}2) Reorder 1-sector partitions${COLOR_GREEN} (Done)${COLOR_RESET}                              ║"
-			echo -e "║    ${COLOR_BLACK_B}Fix a bug that causes libparted to error and be unable to${COLOR_RESET}       ║"
-			echo -e "║    ${COLOR_BLACK_B}detect existing partitions. Highly recommended before${COLOR_RESET}           ║"
-			echo -e "║    ${COLOR_BLACK_B}installing linux alongside ChromeOS.${COLOR_RESET}                            ║"
+			echo -e "║    ${COLOR_BLACK_B}Work around a bug that causes libparted to error and be unable${COLOR_RESET}  ║"
+			echo -e "║    ${COLOR_BLACK_B}to detect existing partitions.${COLOR_RESET}                                  ║"
 		fi
 		echo -e "║ ${COLOR_YELLOW_B}3) ${COLOR_CYAN_B}Re-create stateful filesystem${COLOR_RESET}                                   ║"
 		echo -e "║    Reset the ChromeOS user data partition to a factory state.      ║"
@@ -538,20 +520,17 @@ main_menu() {
 			2) fix_1s_parts ;;
 			3) recreate_stateful ;;
 			[qQ])
-				check_1s_parts_prompt
 				cleanup
 				[ "$IS_CROS" -eq 1 ] && [ "$STATEFUL_MOUNTED" -eq 0 ] && echo -e "${COLOR_BLUE_B}Welcome to the void.${COLOR_RESET}"
 				exit
 				;;
 			[rR])
-				check_1s_parts_prompt
 				echo "Rebooting..."
 				cleanup
 				[ "$CRAP_TESTING" -eq 0 ] && reboot
 				exit
 				;;
 			[pP])
-				check_1s_parts_prompt
 				echo "Powering off..."
 				cleanup
 				[ "$CRAP_TESTING" -eq 0 ] && poweroff

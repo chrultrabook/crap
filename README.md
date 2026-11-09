@@ -62,7 +62,7 @@ CRAP - resizing stateful partition
 
 ## TODO / Planned features
 
-- Support LVM stateful (2023+ platforms)
+- Support LVM stateful (2023+ platforms) (coming very soon)
 
 ## Acknowledgements
 
